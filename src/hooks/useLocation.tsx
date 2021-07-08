@@ -20,20 +20,29 @@ export const useLocation = () => {
     });
 
     const watchId = useRef<number>();
+    const isMounted = useRef(true);
+
+    useEffect(() => {
+        isMounted.current = true;
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
 
     /**
      * Obtener posición actual del dispositivo
      */
-    useEffect(() => {
-        setTimeout(() => {            
-            getCurrentLocation()
-                .then( location => {
-                    setInitialPosition(location);
-                    setUserLocation(location);
-                    setRouteLines( routes => [ ...routes, location ]);
-                    setHasLocation(true);
-                });
-        }, 1000);
+    useEffect(() => {          
+        getCurrentLocation()
+            .then( location => {
+
+                if (!isMounted.current) return;
+
+                setInitialPosition(location);
+                setUserLocation(location);
+                setRouteLines( routes => [ ...routes, location ]);
+                setHasLocation(true);
+            });
 
     }, []);
 
@@ -42,7 +51,7 @@ export const useLocation = () => {
 
             Geolocation.getCurrentPosition(
                 ({ coords }) => {
-    
+
                     resolve({
                         latitude: coords.latitude,
                         longitude: coords.longitude
@@ -63,6 +72,9 @@ export const useLocation = () => {
     const followUserLocation = () => {
         watchId.current = Geolocation.watchPosition(
             ({ coords }) => {
+
+                if (!isMounted.current) return;
+
                 const location: Location = {
                     latitude: coords.latitude,
                     longitude: coords.longitude

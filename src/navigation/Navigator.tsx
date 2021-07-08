@@ -4,6 +4,7 @@ import { MapScreen } from '../screens/MapScreen';
 import { PermissionsScreen } from '../screens/PermissionsScreen';
 import { PermissionsContext } from '../context/PermissionsContext';
 import { LoadingScreen } from '../screens/LoadingScreen';
+import { Platform, StatusBar } from 'react-native';
 
 const Stack = createStackNavigator();
 
