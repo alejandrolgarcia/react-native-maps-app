@@ -20,7 +20,8 @@ export const Fab = ({ iconName, onPress, style = {} }: Props) => {
                 <Icon
                     name={ iconName }
                     color="white"
-                    size={ 30 }
+                    size={ 35 }
+                    style={{ left: 1 }}
                 />
             </TouchableOpacity>
             
